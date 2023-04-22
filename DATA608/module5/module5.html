@@ -1,0 +1,108 @@
+ <!DOCTYPE html>
+ <html>
+	<head>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.7.4/d3.min.js"></script>
+	</head>
+	<body>
+		<h1>DATA 608: Module 5</h1>
+		<h2>Donald Butler<br>16 April 2023</h2>
+		<div>
+			<h3><b>Beginner</b></h3>
+			<p>This is one of two homework assignments you can complete for this week. This is geared towards those of you who have never worked with javascript before.</p>
+
+			<p><b>1: </b>Create a function to reverse any word that you type in. This can be typed into either and input box or an alert box, and then print the result in a box or on the webpage.</p>
+			
+			<script type="text/javascript">
+			function reverse_word() {
+				document.getElementById("bq1_result").innerHTML = document.getElementById("bq1_word").value.split("").reverse().join("");
+			}
+			</script>
+
+			<p><form>
+				<label for="bq1_word">Word:</label>
+				<input id="bq1_word" type="text">
+				<input id="bq1_btn" type="button" value="Reverse" onClick="reverse_word();"><br>
+				Reversed Word: <output id="bq1_result"></output>
+			</form></p>
+			
+			<p><b>2: </b>Create a function that takes an input number, and prints a table with the first 20 multiples of the number, in order 5x4.</p>
+			
+			<script type="text/javascript">
+				function calc_multiples() {
+					var num = document.getElementById("bq2_num").value;
+					var resultHTML = "<table>";
+
+					for (row = 0; row < 5; row++) {
+						resultHTML += "<tr>";
+						for (col = 0; col < 4; col++) {
+							resultHTML += "<td>" + (num * (row * 4 + col + 1)) + "</td>";
+						}
+						resultHTML += "</tr>";
+					}
+					resultHTML += "</table>";
+					document.getElementById("bq2_result").innerHTML = resultHTML;
+				}
+			</script>
+
+			<p><form>
+				<label for="bq2_num">Enter Number:</label>
+				<input id="bq2_num" type="number">
+				<input id="bq2_btn" type="button" value="Calculate" onClick="calc_multiples();">
+				<output id="bq2_result"></output>
+			</form></p>
+		</div>
+		<div>
+			<h3><b>Intermediate</b></h3>
+			<p>This is one of two homework assignments you can complete for this week. This is geared towards those of you who have worked with javascript before.</p>
+			
+			<p><b>1: </b>Write a function to load the presidents.csv data and display the data as an html table.</p>
+			
+			<script type="text/javascript">
+				d3.csv('/data/presidents.csv',function (data) {
+					function tabulate(data, columns) {
+						var table = d3.select('body').append('table')
+						var thead = table.append('thead')
+						var	tbody = table.append('tbody');
+
+						// append the header row
+						thead.append('tr')
+							.selectAll('th')
+							.data(columns).enter()
+							.append('th')
+							.text(function (column) { return column; });
+
+						// create a row for each object in the data
+						var rows = tbody.selectAll('tr')
+							.data(data)
+							.enter()
+							.append('tr');
+
+						// create a cell in each row for each column
+						var cells = rows.selectAll('td')
+							.data(function (row) {
+								return columns.map(function (column) {
+									return {column: column, value: row[column]};
+								});
+							})
+							.enter()
+							.append('td')
+							.text(function (d) {return d.value;});
+
+						return table;
+					}
+
+					tabulate(data,['Name','Weight','Height'])
+				});
+			</script>
+			
+			<div id="iq1_table"></div>
+			
+			
+			<p><b>2: </b>Now that you have the presidents data loaded, write a function that will return the president's height and weight when you type it in.</p>
+		
+		
+		
+		</div>
+	</body>
+ </html>
+ 
