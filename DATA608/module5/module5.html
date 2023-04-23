@@ -59,6 +59,12 @@
 			<p><b>1: </b>Write a function to load the presidents.csv data and display the data as an html table.</p>
 			
 			<script type="text/javascript">
+			
+			var presidents = d3.csv('presidents.csv')
+			alert(presidents.length)
+			
+			
+			
 				var tabulate = function (data,columns) {
 				  var table = d3.select('body #iq1_table').append('table')
 					var thead = table.append('thead')
@@ -89,7 +95,7 @@
 				  return table;
 				}
 
-				d3.csv('/data/presidents.csv',function (data) {
+				d3.csv('presidents.csv',function (data) {
 					var columns = ['Name','Height','Weight']
 				  tabulate(data,columns)
 				})
