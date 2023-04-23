@@ -1,7 +1,7 @@
  <!DOCTYPE html>
  <html>
 	<head>
-		<script src="https://d3js.org/d3.v3.min.js"></script>
+		<script src="https://d3js.org/d3.v7.min.js"></script>
 	</head>
 	<body>
 		<h1>DATA 608: Module 5</h1>
@@ -61,47 +61,76 @@
 			
 			
 			<p><b>2: </b>Now that you have the presidents data loaded, write a function that will return the president's height and weight when you type it in.</p>
+			
+			<p><form>
+				<label for="iq2_president">Select President:</label>
+				<select id="iq2_president"></select>
+				<input id="iq2_btn" type="button" value="Lookup" onClick="getPresidentData();">
+				<output id="iq2_result"></output>
+			</form></p>
+			
+			
 		</div>
 
 		<script type="text/javascript">
-			  var tabulate = function (data,columns) {
-			  var table = d3.select('body #iq1_table').append('table')
-			  var thead = table.append('thead')
-			  var tbody = table.append('tbody')
-			  thead.append('tr')
-				.selectAll('th')
-				  .data(columns)
-				  .enter()
-				.append('th')
-				  .text(function (d) { return d })
-			  var rows = tbody.selectAll('tr')
-				  .data(data)
-				  .enter()
-				.append('tr')
-			  var cells = rows.selectAll('td')
-				  .data(function(row) {
-					return columns.map(function (column) {
-					  return {column: column, value: row[column]}
+			var create_table = function(data, columns) {
+				var table = d3.select('body #iq1_table').append('table')
+				var thead = table.append('thead')
+				var tbody = table.append('tbody')
+				thead.append('tr')
+					.selectAll('th')
+					.data(columns)
+					.enter()
+					.append('th')
+					.text(function(d) {return d})
+				var rows = tbody.selectAll('tr')
+					.data(data)
+					.enter()
+					.append('tr')
+				var cells = rows.selectAll('td')
+					.data(function(row) {
+						return columns.map(function(column) {
+							return {column: column, value: row[column]}
+						})
 					})
-				  })
-				  .enter()
-				.append('td')
-				  .text(function (d) { return d.value })
-			  return table;
+					.enter()
+					.append('td')
+					.text(function (d) {return d.value})
+				return table;
 			}
 			
-			var presidents = d3.csv('./data/presidents.csv');
-			/*d3.csv('./data/presidents.csv',function (data) {
-			  var columns = ['Name','Height','Weight']
-			  tabulate(data,columns)
+			var create_select = function(data) {
+				var dropdown = d3.select('#iq2_president');
+				var options = dropdown.selectAll('option')
+					.data(data)
+					.enter()
+					.append('option');
+				options.text(function (d) {
+					return d.Name;
+				}).attr('value', function(d) {
+					return d.Name;
+				});
+			}
+
+			function getPresidentData() {
+				var selectedPresIndex = d3.select("#iq2_president").property('selectedIndex')
+				var iq2Result = d3.select('#iq2_result').html('');
+
+				d3.select("#iq1_table")
+					.select('table')
+					.select('tbody')
+					.selectAll('tr')
+					.filter((d, i) => i === selectedPresIndex)
+					.selectAll('td')
+					.each(function(d,i) {
+						iq2Result.append('p').text(d.column + ': ' + d.value);
+					});
+			}
+			
+			d3.csv('./data/presidents.csv').then(function(data) {
+				create_table(data, ['Name','Height','Weight']);
+				create_select(data);
 			});
-			*/
-			
-			tabulate(presidents, ['Name','Height','Weight'])
-			
-			
-			
 		</script>
 	</body>
  </html>
- 
