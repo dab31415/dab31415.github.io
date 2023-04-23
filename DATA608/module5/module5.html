@@ -89,7 +89,7 @@
 				  .text(function (d) { return d.value })
 			  return table;
 			}
-			d3.csv('presidents.csv',function (data) {
+			d3.csv('/data/presidents.csv',function (data) {
 			  var columns = ['Name','Height','Weight']
 			  tabulate(data,columns)
 			});
